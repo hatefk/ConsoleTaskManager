@@ -1,11 +1,6 @@
 ﻿using TaskManagerDemo.Models;
 using TaskManagerDemo.Services;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Task = TaskManagerDemo.Models.Task;
 using TaskManagerDemo.Resources;
 
@@ -57,15 +52,25 @@ namespace TaskManagerDemo.ViewModels
         {
             var taskStatusDisplay = task.IsCompleted ?  Strings.CompleteTaskIcon : Strings.OpenTaskIcon;
             var taskTimingDisplay = String.Empty;
-            if (task.IsCompleted)
+            try
             {
-                var timeDiff = TimeHelper.GetTimeDifferenceInMinSec(DateTime.UtcNow, task.CompletedTimeStamp);
-                taskTimingDisplay = String.Format(Strings.CompleteTaskTimingFormat, timeDiff);
+                if (task.IsCompleted)
+                {
+                    var timeDiff = TimeHelper.GetTimeDifferenceInMinSec(DateTime.UtcNow, task.CompletedTimeStamp);
+                    taskTimingDisplay = String.Format(Strings.CompleteTaskTimingFormat, timeDiff);
+                }
+                else
+                {
+                    var timeDiff = TimeHelper.GetTimeDifferenceInMinSec(DateTime.UtcNow, task.CreatedTimeStamp);
+                    taskTimingDisplay = String.Format(Strings.OpenTaskTimingFormat, timeDiff); ;
+                }
             }
-            else
+            catch(Exception ex)
             {
-                var timeDiff = TimeHelper.GetTimeDifferenceInMinSec(DateTime.UtcNow, task.CreatedTimeStamp);
-                taskTimingDisplay = String.Format(Strings.OpenTaskTimingFormat, timeDiff); ;
+                taskTimingDisplay = Strings.TaskTimingError;
+                // In Real Life, we will not hit this exception at all because we control start and end time
+                // However, If this happened, I would log this to a logging mechanism such as Sentry or CloudWatch..
+                Display.Error(ex.Message);
             }
             return String.Format(Strings.TaskListItemFormat, task.Id, taskStatusDisplay, task.Description, taskTimingDisplay);
         }

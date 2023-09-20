@@ -19,5 +19,6 @@
         public static string OpenTaskTimingFormat = "[Open for {0} minutes.]";
         public static string CompleteTaskIcon = "[X]";
         public static string OpenTaskIcon = "[ ]";
+        public static string TaskTimingError "Task Timing Not Available! Please Contact Support!";
     }
 }
