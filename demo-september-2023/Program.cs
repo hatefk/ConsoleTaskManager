@@ -1,5 +1,5 @@
 ﻿// See https://aka.ms/new-console-template for more information
-using TaskManagerDemo.services;
+using TaskManagerDemo.Services;
 using TaskManagerDemo.ViewModels;
 using TaskManagerDemo.Resources;
 

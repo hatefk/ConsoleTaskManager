@@ -1,6 +1,6 @@
 ﻿using TaskManagerDemo.Resources;
 
-namespace TaskManagerDemo.services
+namespace TaskManagerDemo.Services
 {
     public static class Display
     {

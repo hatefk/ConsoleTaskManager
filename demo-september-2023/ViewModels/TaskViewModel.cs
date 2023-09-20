@@ -1,5 +1,5 @@
 ﻿using TaskManagerDemo.Models;
-using TaskManagerDemo.services;
+using TaskManagerDemo.Services;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -37,6 +37,7 @@ namespace TaskManagerDemo.ViewModels
             }
 
             task.IsCompleted = true;
+            task.CompletedTimeStamp = DateTime.UtcNow;
 
             return new TaskCompleteResult(true, String.Format(Strings.TaskCompleteMessageFormat, task.Description));
         }
@@ -54,8 +55,19 @@ namespace TaskManagerDemo.ViewModels
 
         private string GetAsListItem(Task task)
         {
-            var taskStatusDisplay = task.IsCompleted ? "[X]" : "[ ]";
-            return String.Format(Strings.TaskListItemFormat, task.Id, taskStatusDisplay, task.Description);
+            var taskStatusDisplay = task.IsCompleted ?  Strings.CompleteTaskIcon : Strings.OpenTaskIcon;
+            var taskTimingDisplay = String.Empty;
+            if (task.IsCompleted)
+            {
+                var timeDiff = TimeHelper.GetTimeDifferenceInMinSec(DateTime.UtcNow, task.CompletedTimeStamp);
+                taskTimingDisplay = String.Format(Strings.CompleteTaskTimingFormat, timeDiff);
+            }
+            else
+            {
+                var timeDiff = TimeHelper.GetTimeDifferenceInMinSec(DateTime.UtcNow, task.CreatedTimeStamp);
+                taskTimingDisplay = String.Format(Strings.OpenTaskTimingFormat, timeDiff); ;
+            }
+            return String.Format(Strings.TaskListItemFormat, task.Id, taskStatusDisplay, task.Description, taskTimingDisplay);
         }
 
         private int NextId()
