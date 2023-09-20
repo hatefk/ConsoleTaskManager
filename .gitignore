@@ -1,4 +1,5 @@
-
+demo-september-2023/bin/
+demo-september-2023/obj/
 *.bin
 *.v2
 demo-september-2023/obj/project.assets.json
